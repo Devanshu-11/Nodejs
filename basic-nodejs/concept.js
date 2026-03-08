@@ -5,3 +5,15 @@
 // npm is a tool that helps you install and manage packages for your project
 // ES standards means rules and features for the JavaScript language that are officially defined so all browsers and runtimes behave the same
 // Node REPL-Read,Evaluate,Print,Loop and it lets you run the js line by line and see the results immediately
+
+// Commonjs modules
+// 1- We use the module.exports and require()
+// 2- by default used in Nodejs
+// 3- It requires module in synchronous way
+// 4- code runs in non-strict mode
+
+// ES Modules
+// 1- we use import and export
+// 2- By default used in Reactjs, Angularjs
+// 3- It requires module in asynchronous way
+// 4- code runs in strict mode
