@@ -2,7 +2,22 @@ const {adminAuth, userAuth}=require('./middlewares/authMiddleware.js');
 const express=require('express');
 const app=express();
 
-// Middleware is a function that executes between the client request and the server response to process or modify the request or response
+// Middleware is a type of function that executes between the client request and the server response and can process, modify or terminate or pass forward the request/response
+// if we forgot to call next(), then process will hang indefinitely
+
+// Route-specific middleware runs only on the specific route
+// global middleware runs on every request regardless of the route
+// app.use((req, res, next)=>{
+//     console.log("Runs for every request");
+//     next();
+// });
+
+// can also do that middleware runs on every get request
+// app.get("*", (req, res, next) => {
+//     console.log("This runs for every GET request");
+//     next();
+// });
+
 // handle auth middleware for all the requests-GET, PUT, POST, DELETE, PATCH
 app.use('/admin',adminAuth);
 
