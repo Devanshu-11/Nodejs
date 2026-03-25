@@ -1,6 +1,8 @@
 const express=require('express');
 const connectDB=require('./config/database.js');
 const User=require('./models/user.js');
+const {validateSignUpData}=require('./utils/validation.js');
+const bcrypt=require('bcrypt');
 const app=express();
 
 // it is used to parse incoming JSON data from the request body
@@ -8,6 +10,13 @@ app.use(express.json());
 
 // add data in database
 app.post('/signup',async(req,res)=>{
+    // validation of the data
+    validateSignUpData(req);
+
+    // Encrypt the password and also once we encrypt it, we cannot decrypt it
+    const {firstName,lastName,emailId,password}=req.body;
+    const saltRounds=10;
+    const passwordHash=await bcrypt.hash(password,saltRounds);
 
     // creating the instance of user model
     // const user=new User({
@@ -17,12 +26,42 @@ app.post('/signup',async(req,res)=>{
     //     password:'11223344',
     // });
 
-    const user=new User(req.body);
-    // console.log(req.body);
+    const user=new User({
+        firstName,
+        lastName,
+        emailId,
+        password:passwordHash,
+    });
 
     try{
         await user.save();
         res.send('User added successfully');
+    }catch(error){
+        res.status(400).send('Error occured');
+    }
+});
+
+// Now creating the login Api
+app.post('/login',async(req,res)=>{
+    try{
+        const {emailId,password}=req.body;
+        if(!emailId||!password){
+            throw new Error('Invalid Credentials');
+        }
+
+        // to check if emailId is present
+        const user=await User.findOne({emailId:emailId});
+        if(!user){
+            throw new Error('Invalid Credentials');
+        }
+
+        const isPasswordValid=await bcrypt.compare(password,user.password);
+        if(isPasswordValid){
+            res.send('User Login successful');
+        }else{
+            throw new Error('Invalid Credentials');
+        }
+
     }catch(error){
         res.status(400).send('Error occured');
     }
