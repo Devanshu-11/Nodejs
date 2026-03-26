@@ -1,12 +1,18 @@
 const express=require('express');
 const connectDB=require('./config/database.js');
+const cookieParser=require('cookie-parser')
+const jwt=require('jsonwebtoken');
 const User=require('./models/user.js');
 const {validateSignUpData}=require('./utils/validation.js');
 const bcrypt=require('bcrypt');
+const {jwtUserAuth}=require('./middlewares/authMiddleware.js');
 const app=express();
 
 // it is used to parse incoming JSON data from the request body
 app.use(express.json());
+
+// add cookie parser middleware
+app.use(cookieParser());
 
 // add data in database
 app.post('/signup',async(req,res)=>{
@@ -43,6 +49,7 @@ app.post('/signup',async(req,res)=>{
 
 // Now creating the login Api
 app.post('/login',async(req,res)=>{
+
     try{
         const {emailId,password}=req.body;
         if(!emailId||!password){
@@ -57,18 +64,43 @@ app.post('/login',async(req,res)=>{
 
         const isPasswordValid=await bcrypt.compare(password,user.password);
         if(isPasswordValid){
+            // create a jwt token
+            const token=jwt.sign({id: user._id},"ajsAhshr#1i@",{expiresIn:"1d"});
+
+            // Add a token to cookie and send the response back to user
+            res.cookie("token",token, {expires: new Date(Date.now()+24*60*60*1000)});
             res.send('User Login successful');
         }else{
             throw new Error('Invalid Credentials');
         }
-
     }catch(error){
         res.status(400).send('Error occured');
     }
 });
 
+// to get the profile of the user
+app.get('/profile',jwtUserAuth,async(req,res)=>{
+
+    try{
+        const user=req.user;
+        if(!user){
+            throw new Error("Please Login again");
+        }
+        res.send(user);
+    }catch(error){
+        res.status(400).send('Error occured');
+    }
+});
+
+app.post('/sendConnectionRequest',jwtUserAuth,async(req,res)=>{
+
+    // sending a connection request
+    res.send('Send a connection request');
+
+});
+
 // to fetch user via email
-app.get('/user', async(req,res)=>{
+app.get('/user',jwtUserAuth,async(req,res)=>{
     const userEmail=req.body.emailId;
 
     try{
@@ -79,7 +111,6 @@ app.get('/user', async(req,res)=>{
         }else{
             res.send(users);
         }
-
     }catch(error){
         res.status(400).send("Something Went Wrong");
     }
