@@ -23,12 +23,24 @@
 // PATCH-update specific fields and do partial update
 
 // API
-// 1- POST- signup 
-// 2- POST- login 
-// 3- GET- to get profile 
-// 4- POST- update profile 
-// 5- DELETE- delete profile 
-// 6- POST- send connection request- ignore or interested
-// 7- POST- review request- accept or reject
-// 8- GET- see all the requests 
-// 9- GET- to get all the connections
+
+// Auth Router-
+// 1- POST /signup
+// 2- POST /login
+// 3- POST /logout
+
+// profile Router-
+// 1- GET /profile/view
+// 2- PATCH /profile/edit
+// 3- PATCH /profile/password
+
+// connectionRequest Router-
+// 1- POST /request/send/interested/:userId 
+// 2- POST /request/send/ignored/:userId
+// 3- POST /request/review/accepted/:requestId
+// 4- POST /request/review/rejected/:requestId
+
+// getUser Router-
+// 1- GET /user/connections 
+// 2- GET /user/requests/received
+// 3- GET /user/feed -it gets you the profile of other users on the platform
