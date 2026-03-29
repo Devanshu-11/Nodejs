@@ -14,90 +14,14 @@ app.use(express.json());
 // add cookie parser middleware
 app.use(cookieParser());
 
-// add data in database
-app.post('/signup',async(req,res)=>{
-    // validation of the data
-    validateSignUpData(req);
+// to import all routers
+const authRouter=require('./routes/auth.js');
+const profileRouter=require('./routes/profile.js');
+const requestRouter=require('./routes/request.js');
 
-    // Encrypt the password and also once we encrypt it, we cannot decrypt it
-    const {firstName,lastName,emailId,password}=req.body;
-    const saltRounds=10;
-    const passwordHash=await bcrypt.hash(password,saltRounds);
-
-    // creating the instance of user model
-    // const user=new User({
-    //     firstName:'Virat',
-    //     lastName:'Kohli',
-    //     emailId:'ViratKohli18@gmail.com',
-    //     password:'11223344',
-    // });
-
-    const user=new User({
-        firstName,
-        lastName,
-        emailId,
-        password:passwordHash,
-    });
-
-    try{
-        await user.save();
-        res.send('User added successfully');
-    }catch(error){
-        res.status(400).send('Error occured');
-    }
-});
-
-// Now creating the login Api
-app.post('/login',async(req,res)=>{
-
-    try{
-        const {emailId,password}=req.body;
-        if(!emailId||!password){
-            throw new Error('Invalid Credentials');
-        }
-
-        // to check if emailId is present
-        const user=await User.findOne({emailId:emailId});
-        if(!user){
-            throw new Error('Invalid Credentials');
-        }
-
-        const isPasswordValid=await bcrypt.compare(password,user.password);
-        if(isPasswordValid){
-            // create a jwt token
-            const token=jwt.sign({id: user._id},"ajsAhshr#1i@",{expiresIn:"1d"});
-
-            // Add a token to cookie and send the response back to user
-            res.cookie("token",token, {expires: new Date(Date.now()+24*60*60*1000)});
-            res.send('User Login successful');
-        }else{
-            throw new Error('Invalid Credentials');
-        }
-    }catch(error){
-        res.status(400).send('Error occured');
-    }
-});
-
-// to get the profile of the user
-app.get('/profile',jwtUserAuth,async(req,res)=>{
-
-    try{
-        const user=req.user;
-        if(!user){
-            throw new Error("Please Login again");
-        }
-        res.send(user);
-    }catch(error){
-        res.status(400).send('Error occured');
-    }
-});
-
-app.post('/sendConnectionRequest',jwtUserAuth,async(req,res)=>{
-
-    // sending a connection request
-    res.send('Send a connection request');
-
-});
+app.use('/',authRouter);
+app.use('/',profileRouter);
+app.use('/',requestRouter);
 
 // to fetch user via email
 app.get('/user',jwtUserAuth,async(req,res)=>{
