@@ -29,4 +29,12 @@ const validateSignUpData=(req)=>{
     }
 }
 
-module.exports={validateSignUpData};
+const validateEditProfileData=(req)=>{
+    const allowedEditFields=["firstName","lastName","age","gender","photoURL","about","skills"];
+
+    // to check that all fields sent in the request body are allowed fields
+    const isEditAllowed=Object.keys(req.body).every(field=>allowedEditFields.includes(field));
+    return isEditAllowed;
+}
+
+module.exports={validateSignUpData,validateEditProfileData};
