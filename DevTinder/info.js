@@ -22,8 +22,6 @@
 // DELETE- it is used to delete the data
 // PATCH-update specific fields and do partial update
 
-// API
-
 // Auth Router-
 // 1- POST /signup
 // 2- POST /login

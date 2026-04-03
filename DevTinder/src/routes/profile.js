@@ -17,7 +17,7 @@ profileRouter.get('/profile/view',jwtUserAuth,async(req,res)=>{
     }
 });
 
-// to edit the profile of api
+// to edit the profile of user
 profileRouter.patch('/profile/edit',jwtUserAuth,async(req,res)=>{
 
     try{

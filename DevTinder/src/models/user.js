@@ -1,6 +1,7 @@
 const mongoose=require('mongoose');
 const validator=require('validator');
 
+// creating the user schema
 const userSchema=new mongoose.Schema({
     firstName:{
         type:String,
@@ -53,7 +54,7 @@ const userSchema=new mongoose.Schema({
         type:[String],
     }
 },{
-    timestamps:true
+    timestamps:true,
 });
 
 // creating a model
