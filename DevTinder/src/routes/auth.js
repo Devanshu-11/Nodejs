@@ -46,13 +46,13 @@ authRouter.post('/login',async(req,res)=>{
     try{
         const {emailId,password}=req.body;
         if(!emailId||!password){
-            throw new Error('Invalid Credentials');
+            return res.status(400).send('Invalid Credentials');
         }
 
         // to check if emailId is present
         const user=await User.findOne({emailId:emailId});
         if(!user){
-            throw new Error('Invalid Credentials');
+            return res.status(400).send('Invalid Credentials');
         }
 
         const isPasswordValid=await bcrypt.compare(password,user.password);
@@ -64,7 +64,7 @@ authRouter.post('/login',async(req,res)=>{
             res.cookie("token",token, {expires: new Date(Date.now()+24*60*60*1000)});
             res.send('User Login successful');
         }else{
-            throw new Error('Invalid Credentials');
+            return res.status(400).send('Invalid Credentials');
         }
     }catch(error){
         res.status(400).send('Error occured');

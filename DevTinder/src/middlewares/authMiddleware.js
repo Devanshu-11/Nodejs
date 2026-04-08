@@ -55,5 +55,4 @@ const jwtUserAuth=async(req,res,next)=>{
     }
 };
 
-
 module.exports={adminAuth,userAuth,jwtUserAuth};

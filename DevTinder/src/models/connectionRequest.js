@@ -4,6 +4,9 @@ const mongoose=require('mongoose');
 const connectionRequestSchema=new mongoose.Schema({
     fromUserId:{
         type:mongoose.Schema.Types.ObjectId,
+
+        // creating the reference to the user collection
+        ref: "User",
         required:true,
     },
     toUserId:{
@@ -21,6 +24,9 @@ const connectionRequestSchema=new mongoose.Schema({
 },{
     timestamps:true,
 });
+
+// create an index on the fromUserId field
+connectionRequestSchema.index({fromUserId:1,toUserId:1});
 
 // creating a model
 const ConnectionRequest=mongoose.model('ConnectionRequest',connectionRequestSchema);
