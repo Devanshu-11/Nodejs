@@ -49,7 +49,7 @@ requestRouter.post('/request/send/:status/:toUserId',jwtUserAuth,async(req,res)=
 
         const data=await connectionRequest.save();
         return res.send({
-            message:'Connection Request successfully',
+            message:'Connection request sent successfully',
             data,
         });
     }catch(error){
