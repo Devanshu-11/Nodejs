@@ -15,9 +15,13 @@ setTimeout(()=>{
     console.log('set Timeout called after 5 seconds');
 },5000);
 
-// reads file in asynchronous way
+// reads file in synchronous way
+const SyncFileData=fs.readFileSync("./file.txt",'utf-8');
+console.log("Sync File data is: ",SyncFileData);
+
+// reads file in asynchronous way and it loads off to Libuv
 fs.readFile('./file.txt','utf-8',(err,data)=>{
-    console.log("File data: ",data);
+    console.log("Async File data is: ",data);
 });
 
 function multiplyFn(x,y){
