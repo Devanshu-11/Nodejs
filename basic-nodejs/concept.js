@@ -30,3 +30,9 @@
 
 // Javascript is a single threaded language and executes one task at a time, if there are so many tasks arrives, then it will placed in a queue and processed one by one by the event loop
 // Js is synchronous and single threaded language and with the help of runtime environment like Nodejs, it can performs asynchronous operations
+
+// Phases of the Event Loop-
+// 1- Timer phase-In this phase,all callbacks which are set by setTimeout or setInterval will be executed
+// 2- Poll Phase- Most callbacks associated with I/O callbacks will be executed like- fs.readFile, http.get, reading file,api calls etc
+// 3- Check Phase- In this phase,setImmediate callback is executed
+// 4- Close phase- It is used for closing sockets or to close any connection
