@@ -1,0 +1,30 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix DevTinder\" \"npm run dev --prefix devTinder-web\"",
+    "start": "concurrently \"npm start --prefix DevTinder\" \"npm run dev --prefix devTinder-web\"",
+    "backend": "npm run dev --prefix DevTinder",
+    "frontend": "npm run dev --prefix devTinder-web"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Devanshu-11/Nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Devanshu-11/Nodejs/issues"
+  },
+  "homepage": "https://github.com/Devanshu-11/Nodejs#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

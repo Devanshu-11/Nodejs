@@ -2,6 +2,7 @@ const express=require('express');
 const connectDB=require('./config/database.js');
 const cookieParser=require('cookie-parser')
 const jwt=require('jsonwebtoken');
+const cors=require('cors');
 const User=require('./models/user.js');
 const {validateSignUpData}=require('./utils/validation.js');
 const bcrypt=require('bcrypt');
@@ -13,6 +14,9 @@ app.use(express.json());
 
 // add cookie parser middleware
 app.use(cookieParser());
+
+// import cors
+app.use(cors());
 
 // to import all routers
 const authRouter=require('./routes/auth.js');
