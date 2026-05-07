@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const Login=()=>{
+    // We dispatch an action to add the data to redux store
+    const dispatch=useDispatch();
+    const Navigate=useNavigate();
+
     const [emailId,setEmailId]=useState("");
     const [password,setPassword]=useState("");
 
@@ -12,8 +19,10 @@ const Login=()=>{
             const res=await axios.post('http://localhost:3000/login',{
                 emailId,
                 password,
-            });
+            },{withCredentials:true});
+            dispatch(addUser(res.data));
             toast.success("Login successful");
+            return Navigate('/');
         }catch(error){
             console.log(error);
             toast.error("Login failed");

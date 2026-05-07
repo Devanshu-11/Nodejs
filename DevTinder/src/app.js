@@ -16,7 +16,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 // import cors
-app.use(cors());
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}));
 
 // to import all routers
 const authRouter=require('./routes/auth.js');

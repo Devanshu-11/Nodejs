@@ -1,6 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-const NavBar = () => {
+const NavBar=()=>{
+  const user=useSelector((store)=>store.user);
+  console.log(user);
+
   return (
     <div className="navbar bg-base-100 shadow-md px-4 md:px-8">
 
@@ -21,12 +25,18 @@ const NavBar = () => {
             role="button"
             className="btn btn-ghost btn-circle avatar"
           >
-            <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-              <img
-                alt="User avatar"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
-            </div>
+            
+          {user&& (
+            <>
+              <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                <img
+                  alt="User avatar"
+                  src={user.photoUrl}
+                />
+              </div>
+            </>
+          )}
+            
           </div>
 
           <ul
